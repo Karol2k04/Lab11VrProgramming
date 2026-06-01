@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class ColorChanger : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public InputActionProperty colorAction;
+    private Renderer _renderer;
 
-    // Update is called once per frame
-    void Update()
+    void Start() => _renderer = GetComponent<Renderer>();
+
+    void OnEnable() => colorAction.action.performed += ChangeColor;
+    void OnDisable() => colorAction.action.performed -= colorAction.action.performed; // Poprawka: usunięcie subskrypcji
+
+    void ChangeColor(InputAction.CallbackContext context)
     {
-        
+        _renderer.material.color = new Color(Random.value, Random.value, Random.value);
     }
 }
